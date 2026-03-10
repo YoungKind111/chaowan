@@ -1,7 +1,1083 @@
 <!DOCTYPE html>
-<html><head>
-<title>我的第一个GitHub Pages网站</title></head><body>
-<h1>欢迎来到我的网站!</h1>
-<p>这是我使用GitHubPages创建的第一个网站。</p>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>服务人员等级预测表</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 15px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .header h1 {
+            font-size: 26px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            margin-bottom: 15px;
+        }
+
+        .first-card-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .input-section {
+            text-align: left;
+        }
+
+        .input-section label {
+            display: block;
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .input-row {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .input-group label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 0;
+            font-weight: 500;
+        }
+
+        .input-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-wrapper input {
+            width: 100px;
+            padding: 10px 12px;
+            font-size: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .input-wrapper span {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .current-level {
+            text-align: center;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            color: white;
+        }
+
+        .current-level .label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 3px;
+        }
+
+        .current-level .level {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .current-level .days {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .leave-date-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .leave-date-row input[type="date"] {
+            padding: 8px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .leave-date-row input[type="date"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .leave-date-row span {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .delete-leave-btn {
+            padding: 8px 12px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .delete-leave-btn:hover {
+            background: #c0392b;
+        }
+
+        .leave-day {
+            background: #ffeaa7 !important;
+        }
+
+        .leave-day .day-number {
+            color: #d63031;
+        }
+
+        .progress-section {
+            margin-bottom: 20px;
+        }
+
+        .progress-section h3 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar-container {
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 30px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .level-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .level-table th,
+        .level-table td {
+            padding: 12px 15px;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .level-table th {
+            background: #f5f5f5;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .level-table tr.active {
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        }
+
+        .level-table tr.active td {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .level-table tr.completed {
+            background: rgba(46, 204, 113, 0.1);
+        }
+
+        .level-table tr.completed td {
+            color: #27ae60;
+        }
+
+        .level-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .schedule-info {
+            text-align: center;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            margin-top: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .calendar-header {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .calendar-top-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .calendar-view-tabs {
+            display: flex;
+            gap: 5px;
+            background: #f5f5f5;
+            padding: 4px;
+            border-radius: 8px;
+        }
+
+        .view-tab {
+            padding: 8px 16px;
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s;
+            color: #666;
+        }
+
+        .view-tab.active {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .view-tab:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .calendar-middle-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 8px;
+        }
+
+        .calendar-nav-btn {
+            padding: 8px 14px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s;
+            color: #333;
+        }
+
+        .calendar-nav-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .calendar-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+            min-width: 150px;
+            text-align: center;
+        }
+
+        .calendar-container {
+            overflow-x: auto;
+        }
+
+        .calendar-grid {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 4px;
+        }
+
+        .calendar-grid th,
+        .calendar-grid td {
+            padding: 5px;
+            text-align: center;
+            vertical-align: top;
+            min-width: 50px;
+            height: 55px;
+            border-radius: 6px;
+            background: white;
+        }
+
+        .calendar-grid th {
+            background: #f0f0f0;
+            font-weight: 600;
+            color: #555;
+            height: auto;
+            font-size: 11px;
+        }
+
+        .calendar-day {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100%;
+        }
+
+        .day-number {
+            font-weight: 600;
+            font-size: 12px;
+            color: #333;
+            margin-bottom: 3px;
+            width: 22px;
+            height: 22px;
+            line-height: 22px;
+            border-radius: 50%;
+        }
+
+        .day-number.today {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+        }
+
+        .day-number.other-month {
+            color: #ccc;
+        }
+
+        .calendar-grid td:has(.day-number:not(.other-month)) {
+            background: #fafafa;
+            border: 1px solid #f0f0f0;
+        }
+
+        .level-marker {
+            font-size: 9px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .current-level-display {
+            font-size: 10px;
+            color: #888;
+            margin-top: 2px;
+        }
+
+        .year-view {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .month-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 10px;
+        }
+
+        .month-card h4 {
+            text-align: center;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 13px;
+        }
+
+        .month-card table {
+            width: 100%;
+            font-size: 11px;
+        }
+
+        .month-card td {
+            padding: 3px;
+            text-align: center;
+        }
+
+        .month-card .level-marker {
+            font-size: 8px;
+            padding: 1px 4px;
+        }
+
+        .calendar-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .calendar-panel {
+            background: #fafafa;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .calendar-panel h4 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .legend {
+            display: flex;
+            gap: 15px;
+            margin-top: 12px;
+            padding: 10px 15px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+
+        .legend-color.today {
+            background: #667eea;
+        }
+
+        .legend-color.level-up {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .current-level .level {
+                font-size: 36px;
+            }
+
+            .level-table th,
+            .level-table td {
+                padding: 8px 10px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>服务人员等级预测表</h1>
+            <p>输入已服务天数，查看当前等级和升级进度</p>
+        </div>
+
+        <div class="card">
+            <div class="first-card-content">
+                <div class="input-section">
+                    <label>输入信息</label>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="scheduleDays">服务档期天数</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="scheduleDays" min="1" value="26" placeholder="26">
+                                <span>天</span>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="daysInput">已服务天数</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="daysInput" min="0" value="0" placeholder="0">
+                                <span>天</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <label style="display: block; margin-bottom: 10px; font-size: 16px; color: #333; font-weight: 600;">请假日期</label>
+                        <div id="leaveDatesContainer">
+                        </div>
+                        <button style="margin-top: 10px; padding: 8px 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px;" onclick="addLeaveDate()">+ 添加请假</button>
+                    </div>
+                </div>
+
+                <div class="current-level" id="currentLevel">
+                    <div class="label">当前等级</div>
+                    <div class="level">Y3-1</div>
+                    <div class="days">累计服务：0 天</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="calendar-header">
+                <div class="calendar-middle-row">
+                    <div class="calendar-nav">
+                        <button class="calendar-nav-btn" id="prevBtn">&lt;</button>
+                    </div>
+                    <div class="calendar-title" id="calendarTitle">2024年1月</div>
+                    <div class="calendar-nav">
+                        <button class="calendar-nav-btn" id="nextBtn">&gt;</button>
+                        <button class="calendar-nav-btn" id="todayBtn">今天</button>
+                    </div>
+                </div>
+            </div>
+            <div class="calendar-split">
+                <div class="calendar-panel">
+                    <h4>月视图</h4>
+                    <div id="monthCalendarContainer"></div>
+                </div>
+                <div class="calendar-panel">
+                    <h4>年视图</h4>
+                    <div id="yearCalendarContainer"></div>
+                </div>
+            </div>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color today"></div>
+                    <span>今天</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color level-up"></div>
+                    <span>等级升级</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #ffeaa7;"></div>
+                    <span>请假</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="margin-bottom: 20px; color: #333;">等级晋升表</h3>
+            <table class="level-table" id="levelTable">
+                <thead>
+                    <tr>
+                        <th>等级</th>
+                        <th>升级所需天数</th>
+                        <th>累计天数</th>
+                        <th>状态</th>
+                    </tr>
+                </thead>
+                <tbody id="levelTableBody">
+                </tbody>
+            </table>
+            <div class="schedule-info" id="scheduleInfo">
+                每个服务档期按 26 天计算
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const levelConfigs = [
+            { name: 'Y3-1', periods: 1 },
+            { name: 'Y3-2', periods: 1 },
+            { name: 'Y4-1', periods: 2 },
+            { name: 'Y4-2', periods: 2 },
+            { name: 'Y5', periods: 6 },
+            { name: 'Y6', periods: 8 },
+            { name: 'Y7', periods: 8 },
+            { name: 'Y8', periods: 8 }
+        ];
+
+        let levels = [];
+        let cumulativeDays = [];
+        let currentDate = new Date();
+        let currentView = 'month';
+        let startDate = new Date();
+        let leaveDates = [];
+
+        let leaveDateIdCounter = 0;
+
+        const scheduleDaysInput = document.getElementById('scheduleDays');
+        const daysInput = document.getElementById('daysInput');
+        const currentLevelEl = document.getElementById('currentLevel');
+        const levelTableBody = document.getElementById('levelTableBody');
+        const scheduleInfo = document.getElementById('scheduleInfo');
+        const monthCalendarContainer = document.getElementById('monthCalendarContainer');
+        const yearCalendarContainer = document.getElementById('yearCalendarContainer');
+        const calendarTitle = document.getElementById('calendarTitle');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const todayBtn = document.getElementById('todayBtn');
+
+        function calculateLevels(scheduleDays) {
+            levels = levelConfigs.map(config => ({
+                name: config.name,
+                days: config.periods * scheduleDays
+            }));
+
+            cumulativeDays = [0];
+            for (let i = 0; i < levels.length; i++) {
+                cumulativeDays.push(cumulativeDays[i] + levels[i].days);
+            }
+
+            scheduleInfo.textContent = `每个服务档期按 ${scheduleDays} 天计算`;
+        }
+
+        function initLevelTable() {
+            levelTableBody.innerHTML = '';
+            for (let i = 0; i < levels.length; i++) {
+                const tr = document.createElement('tr');
+                tr.id = `level-row-${i}`;
+                tr.innerHTML = `
+                    <td>${levels[i].name}</td>
+                    <td>${levels[i].days} 天</td>
+                    <td>${cumulativeDays[i + 1]} 天</td>
+                    <td id="status-${i}">未开始</td>
+                `;
+                levelTableBody.appendChild(tr);
+            }
+        }
+
+        function updateDisplay(totalDays) {
+            totalDays = Math.max(0, totalDays);
+            
+            let currentLevelIndex = 0;
+            for (let i = 0; i < cumulativeDays.length - 1; i++) {
+                if (totalDays >= cumulativeDays[i + 1]) {
+                    currentLevelIndex = i + 1;
+                } else {
+                    break;
+                }
+            }
+            currentLevelIndex = Math.min(currentLevelIndex, levels.length - 1);
+
+            const currentLevel = levels[currentLevelIndex];
+            const levelDiv = currentLevelEl.querySelector('.level');
+            const daysDiv = currentLevelEl.querySelector('.days');
+            levelDiv.textContent = currentLevel.name;
+            daysDiv.textContent = `累计服务：${totalDays} 天`;
+
+            for (let i = 0; i < levels.length; i++) {
+                const row = document.getElementById(`level-row-${i}`);
+                const status = document.getElementById(`status-${i}`);
+                row.classList.remove('active', 'completed');
+
+                if (i < currentLevelIndex) {
+                    row.classList.add('completed');
+                    status.textContent = '已完成';
+                } else if (i === currentLevelIndex) {
+                    row.classList.add('active');
+                    status.textContent = '当前等级';
+                } else {
+                    status.textContent = '未开始';
+                }
+            }
+
+            renderCalendar();
+        }
+
+        function getLevelUpDates() {
+            const totalDays = parseInt(daysInput.value) || 0;
+            const levelUpDates = [];
+            const today = new Date();
+            
+            for (let i = 0; i < cumulativeDays.length; i++) {
+                const targetServiceDays = cumulativeDays[i];
+                const upgradeDate = calculateDateForServiceDays(totalDays, targetServiceDays);
+                levelUpDates.push({
+                    date: upgradeDate,
+                    level: i > 0 ? levels[i - 1].name : '开始',
+                    isUpgrade: i > 0
+                });
+            }
+            return levelUpDates;
+        }
+
+        function calculateDateForServiceDays(startServiceDays, targetServiceDays) {
+            const today = new Date();
+            let currentDate = new Date(today);
+            let serviceDaysCounted = startServiceDays;
+            
+            if (targetServiceDays <= startServiceDays) {
+                while (serviceDaysCounted > targetServiceDays) {
+                    currentDate.setDate(currentDate.getDate() - 1);
+                    if (!isLeaveDate(currentDate)) {
+                        serviceDaysCounted--;
+                    }
+                }
+            } else {
+                while (serviceDaysCounted < targetServiceDays) {
+                    currentDate.setDate(currentDate.getDate() + 1);
+                    if (!isLeaveDate(currentDate)) {
+                        serviceDaysCounted++;
+                    }
+                }
+            }
+            
+            return currentDate;
+        }
+
+        function getLevelForDate(date) {
+            const totalDays = parseInt(daysInput.value) || 0;
+            const today = new Date();
+            
+            let serviceDays = totalDays;
+            let checkDate = new Date(today);
+            
+            if (isSameDay(date, today)) {
+            } else if (date > today) {
+                while (checkDate < date) {
+                    checkDate.setDate(checkDate.getDate() + 1);
+                    if (!isLeaveDate(checkDate)) {
+                        serviceDays++;
+                    }
+                }
+            } else {
+                while (checkDate > date) {
+                    if (!isLeaveDate(checkDate)) {
+                        serviceDays--;
+                    }
+                    checkDate.setDate(checkDate.getDate() - 1);
+                }
+            }
+
+            if (serviceDays < 0) {
+                return null;
+            }
+
+            let levelIndex = 0;
+            for (let i = 0; i < cumulativeDays.length - 1; i++) {
+                if (serviceDays >= cumulativeDays[i + 1]) {
+                    levelIndex = i + 1;
+                } else {
+                    break;
+                }
+            }
+            levelIndex = Math.min(levelIndex, levels.length - 1);
+            return levels[levelIndex].name;
+        }
+
+        function isSameDay(d1, d2) {
+            return d1.getFullYear() === d2.getFullYear() &&
+                   d1.getMonth() === d2.getMonth() &&
+                   d1.getDate() === d2.getDate();
+        }
+
+        function renderMonthView() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const startDay = firstDay.getDay();
+            const daysInMonth = lastDay.getDate();
+
+            const levelUpDates = getLevelUpDates();
+            const today = new Date();
+
+            let html = '<table class="calendar-grid"><thead><tr>';
+            const weekDays = ['日', '一', '二', '三', '四', '五', '六'];
+            weekDays.forEach(day => {
+                html += `<th>${day}</th>`;
+            });
+            html += '</tr></thead><tbody><tr>';
+
+            for (let i = 0; i < startDay; i++) {
+                html += '<td></td>';
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(year, month, day);
+                const isToday = isSameDay(date, today);
+                const levelUp = levelUpDates.find(lu => lu.isUpgrade && isSameDay(lu.date, date));
+                const currentLevel = getLevelForDate(date);
+                const isLeave = isLeaveDate(date);
+
+                if ((startDay + day - 1) % 7 === 0 && day > 1) {
+                    html += '</tr><tr>';
+                }
+
+                const cellClass = isLeave ? 'leave-day' : '';
+                html += `<td class="${cellClass}"><div class="calendar-day">`;
+                html += `<span class="day-number${isToday ? ' today' : ''}">${day}</span>`;
+                if (currentLevel && !isLeave) {
+                    html += `<div style="font-size: 11px; margin-top: 5px; color: #666;">${currentLevel}</div>`;
+                }
+                if (isLeave) {
+                    html += `<div style="font-size: 11px; margin-top: 5px; color: #d63031;">请假</div>`;
+                }
+                if (levelUp) {
+                    html += `<div class="level-marker">升级!</div>`;
+                }
+                html += `</div></td>`;
+            }
+
+            html += '</tr></tbody></table>';
+            monthCalendarContainer.innerHTML = html;
+        }
+
+        function renderYearView() {
+            const year = currentDate.getFullYear();
+
+            const levelUpDates = getLevelUpDates();
+            const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+
+            let html = '<div class="year-view">';
+
+            for (let month = 0; month < 12; month++) {
+                const firstDay = new Date(year, month, 1);
+                const lastDay = new Date(year, month + 1, 0);
+                
+                const monthLevelUps = levelUpDates.filter(lu => 
+                    lu.isUpgrade && 
+                    lu.date.getFullYear() === year && 
+                    lu.date.getMonth() === month
+                );
+
+                const startOfMonth = new Date(year, month, 1);
+                const endOfMonth = new Date(year, month + 1, 0);
+
+                const startLevel = getLevelForDate(startOfMonth);
+                const endLevel = getLevelForDate(endOfMonth);
+
+                html += '<div class="month-card" style="text-align: center;">';
+                html += `<h4 style="margin-bottom: 10px;">${monthNames[month]}</h4>`;
+                
+                if (startLevel) {
+                    if (monthLevelUps.length > 0 && startLevel !== endLevel) {
+                        html += `<div style="display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; font-weight: 600; margin-bottom: 5px;">`;
+                        html += `<span style="color: #666;">${startLevel}</span>`;
+                        html += `<span style="color: #667eea;">→</span>`;
+                        html += `<span style="color: #667eea;">${endLevel}</span>`;
+                        html += `</div>`;
+                    } else {
+                        html += `<div style="font-size: 18px; font-weight: 600; color: #667eea; margin-bottom: 10px;">${startLevel}</div>`;
+                    }
+                }
+
+                if (monthLevelUps.length > 0) {
+                    html += '<div style="font-size: 12px; margin-top: 8px;">';
+                    monthLevelUps.forEach(lu => {
+                        html += `<div class="level-marker" style="margin-top: 5px;">${lu.date.getDate()}日 升级</div>`;
+                    });
+                    html += '</div>';
+                }
+                
+                html += '</div>';
+            }
+            html += '</div>';
+            yearCalendarContainer.innerHTML = html;
+        }
+
+        function renderCalendar() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            calendarTitle.textContent = `${year}年${month + 1}月`;
+            renderMonthView();
+            renderYearView();
+        }
+
+        function navigatePrev() {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            renderCalendar();
+        }
+
+        function navigateNext() {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            renderCalendar();
+        }
+
+        function goToToday() {
+            currentDate = new Date();
+            renderCalendar();
+        }
+
+        function addLeaveDate() {
+            const id = leaveDateIdCounter++;
+            const container = document.getElementById('leaveDatesContainer');
+            
+            const row = document.createElement('div');
+            row.className = 'leave-date-row';
+            row.id = `leave-row-${id}`;
+            
+            const today = new Date();
+            const todayStr = today.toISOString().split('T')[0];
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const tomorrowStr = tomorrow.toISOString().split('T')[0];
+            
+            row.innerHTML = `
+                <input type="date" id="leave-start-${id}" value="${todayStr}">
+                <span>至</span>
+                <input type="date" id="leave-end-${id}" value="${tomorrowStr}">
+                <button class="delete-leave-btn" onclick="deleteLeaveDate(${id})">删除</button>
+            `;
+            
+            container.appendChild(row);
+            
+            const startInput = row.querySelector(`#leave-start-${id}`);
+            const endInput = row.querySelector(`#leave-end-${id}`);
+            startInput.addEventListener('change', updateLeaveDates);
+            endInput.addEventListener('change', updateLeaveDates);
+            
+            updateLeaveDates();
+        }
+
+        function deleteLeaveDate(id) {
+            const row = document.getElementById(`leave-row-${id}`);
+            if (row) {
+                row.remove();
+                updateLeaveDates();
+            }
+        }
+
+        function updateLeaveDates() {
+            leaveDates = [];
+            const rows = document.querySelectorAll('.leave-date-row');
+            
+            rows.forEach(row => {
+                const startInput = row.querySelector('input[type="date"]:first-of-type');
+                const endInput = row.querySelector('input[type="date"]:last-of-type');
+                
+                if (startInput && endInput && startInput.value && endInput.value) {
+                    const startDate = new Date(startInput.value);
+                    const endDate = new Date(endInput.value);
+                    
+                    if (startDate <= endDate) {
+                        leaveDates.push({
+                            start: startDate,
+                            end: endDate
+                        });
+                    }
+                }
+            });
+            
+            const totalDays = parseInt(daysInput.value) || 0;
+            updateDisplay(totalDays);
+        }
+
+        function isLeaveDate(date) {
+            const checkDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+            
+            for (const leave of leaveDates) {
+                const start = new Date(leave.start.getFullYear(), leave.start.getMonth(), leave.start.getDate());
+                const end = new Date(leave.end.getFullYear(), leave.end.getMonth(), leave.end.getDate());
+                
+                if (checkDate >= start && checkDate <= end) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function countLeaveDaysBetween(startDate, endDate) {
+            let count = 0;
+            const start = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+            const end = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
+            
+            for (const leave of leaveDates) {
+                const leaveStart = new Date(leave.start.getFullYear(), leave.start.getMonth(), leave.start.getDate());
+                const leaveEnd = new Date(leave.end.getFullYear(), leave.end.getMonth(), leave.end.getDate());
+                
+                const overlapStart = leaveStart > start ? leaveStart : start;
+                const overlapEnd = leaveEnd < end ? leaveEnd : end;
+                
+                if (overlapStart <= overlapEnd) {
+                    const diffTime = overlapEnd - overlapStart;
+                    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+                    count += diffDays;
+                }
+            }
+            
+            return count;
+        }
+
+        function recalculate() {
+            const scheduleDays = parseInt(scheduleDaysInput.value) || 26;
+            const totalDays = parseInt(daysInput.value) || 0;
+            calculateLevels(scheduleDays);
+            initLevelTable();
+            updateDisplay(totalDays);
+        }
+
+        scheduleDaysInput.addEventListener('input', recalculate);
+        daysInput.addEventListener('input', function() {
+            updateDisplay(parseInt(this.value) || 0);
+        });
+
+        prevBtn.addEventListener('click', navigatePrev);
+        nextBtn.addEventListener('click', navigateNext);
+        todayBtn.addEventListener('click', goToToday);
+
+        calculateLevels(26);
+        initLevelTable();
+        updateDisplay(0);
+    </script>
 </body>
 </html>
